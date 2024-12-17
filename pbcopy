@@ -1,1 +1,0 @@
-    ActionCable.server.broadcast "room_channel", message: data['message']
