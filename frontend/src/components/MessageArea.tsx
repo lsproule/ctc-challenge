@@ -5,8 +5,9 @@ import { createContext } from "react";
 import ActionCable, { Cable } from "actioncable";
 import { Message } from "./Message";
 
+// websocket context
 const CableContext = createContext<Cable | null>(null);
-
+// websocket url 
 const actionCableUrl =
   process.env.NODE_ENV === "production"
     ? "ws://localhost:3000/cable"
@@ -21,6 +22,7 @@ export function MessageArea() {
   const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
   //const [roomObj, setRoomObj] = useState({ messages: [] });
 
+  // fetch messages and current user on component on mount
   useEffect(() => {
     const getMessages = async () => {
       const req = await fetch(`${BACKEND_URL}/messages`);
@@ -36,13 +38,14 @@ export function MessageArea() {
     getMessages();
   }, []);
 
+  // create websocket connection on component 
   useEffect(() => {
     const CableApp = ActionCable.createConsumer(actionCableUrl);
     setCable(CableApp);
   }, []);
 
-  console.log(currentUser);
 
+  // create a new channel and set up the callbacks 
   const new_channel = cable?.subscriptions.create(
     { channel: "RoomChannel" },
     {
@@ -55,6 +58,7 @@ export function MessageArea() {
     },
   );
 
+  // send a message to the websocket server 
   const handleSend = () => {
     console.log("Sending message:", message);
     if (message === "") return;
@@ -64,6 +68,8 @@ export function MessageArea() {
     setMessage("");
   };
 
+
+  // scroll to the bottom of the chat window when a new message is received 
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
 
   const scrollToBottom = () => {

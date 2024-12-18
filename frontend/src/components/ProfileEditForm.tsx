@@ -5,11 +5,13 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 
 export function ProfileEditForm() {
+  //setup state
   const { toast } = useToast();
   const [profile, setProfile] = useState<User>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch user profile on component mount 
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -24,6 +26,7 @@ export function ProfileEditForm() {
     getUser();
   }, []);
 
+  // handle input change
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
