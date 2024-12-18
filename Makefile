@@ -20,4 +20,5 @@ cleanup:
 	cd $(BACKEND_DIR) && \
 	RAILS_ENV=production DISABLE_DATABASE_ENVIRONMENT_CHECK=1 rails db:reset && \
 	cd ..
+	docker compose down
 
