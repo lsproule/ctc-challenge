@@ -1,50 +1,95 @@
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useToast } from "@/hooks/use-toast"
-
-
-
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 
 export function ProfileEditForm() {
-  const { toast } = useToast()
-
-  const [profile, setProfile] = useState<User>()
+  const { toast } = useToast();
+  const [profile, setProfile] = useState<User>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const getUser = async () => {
-      const req = await fetch(`${window.origin}/current_user`) 
-      const user = await req.json()
-      setProfile(user)
-    } 
-    getUser()
-
-  },[])
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setProfile((prev:User | undefined) => {
-      if (!prev){
-        return undefined
+      try {
+        const req = await fetch(`${window.origin}/current_user`);
+        if (!req.ok) throw new Error("Failed to fetch user profile");
+        const user = await req.json();
+        setProfile(user);
+      } catch (err) {
+        setError("Could not load profile. Please try again later.");
       }
-      return { ...prev, [name]: value }
-    })
+    };
+    getUser();
+  }, []);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+    setProfile((prev) => {
+      if (!prev) return undefined;
+      return { ...prev, [name]: value };
+    });
+  };
+
+  const updateUser = async () => {
+    try {
+      const response = await fetch(`${window.origin}/current_user`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: {
+            email: profile?.email,
+            password: profile?.password || "",
+          },
+        }),
+      });
+
+      // Check if response has JSON body
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({})); // Handle invalid JSON
+        throw new Error(errorData.errors?.[0] || "Failed to update profile.");
+      }
+
+      // Parse JSON response
+      const updatedUser = await response.json();
+      console.log("Profile updated:", updatedUser);
+
+      toast({
+        title: "Profile updated",
+        description: "Your profile has been successfully updated.",
+      });
+    } catch (err: any) {
+      console.error(err.message);
+      toast({
+        title: "Error updating profile",
+        description: err.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    updateUser();
+    setLoading(false); 
+  };
+
+  if (!profile) {
+    return error ? (
+      <div className="text-red-500">{error}</div>
+    ) : (
+      <div>Loading...</div>
+    );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Here you would typically send the updated profile to your backend
-    console.log("Updated profile:", profile)
-    toast({
-      title: "Profile updated",
-      description: "Your profile has been successfully updated.",
-    })
-  }
-
-  if (!profile){
-    return
-  }
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
@@ -61,17 +106,19 @@ export function ProfileEditForm() {
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
         <Input
-          id="email"
+          id="password"
           name="password"
           type="password"
-          value={profile.password}
+          value={profile.password || ""}
           onChange={handleInputChange}
-          required
         />
       </div>
 
-      <Button type="submit" className="w-full">Update Profile</Button>
-    </form>
-  )
-}
+      {error && <div className="text-red-500">{error}</div>}
 
+      <Button type="submit" className="w-full" disabled={loading}>
+        {loading ? "Updating..." : "Update Profile"}
+      </Button>
+    </form>
+  );
+}

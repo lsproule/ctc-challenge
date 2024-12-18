@@ -18,6 +18,9 @@ Rails.application.routes.draw do
 
     get '/check_auth', to: 'auth_check#check'
     get '/current_user', to: 'users#get_current_user' 
+
+    put   '/current_user', to: 'users#update_current_user'  
+    patch '/current_user', to: 'users#update_current_user' 
   end
   
   get '/' => redirect('/app')
