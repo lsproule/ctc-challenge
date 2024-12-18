@@ -31,5 +31,7 @@ services:
           target: /rails
     ports:
       - 4000:3000
+    volumes:
+      - ./backend/storage/production.sqlite3:/rails/storage/production.sqlite3
 
 

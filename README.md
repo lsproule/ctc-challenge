@@ -7,12 +7,20 @@ The database is SQLite, and user credentials are managed using the Devise gem.
 
 ## Startup Command
 
-To get the project up and running, simply use Docker Compose:
+To get the project up and running, simply use the Makefile:
 
 ```bash
+make
+```
+
+This will create a persistent db and start both the frontend and backend services.
+
+After running the Makefile you can run
+```
 docker compose up
 ```
-This will start both the frontend and backend services.
+
+We mount the database from the filesystem into compose, so even if the container dies, data isn't lost.
 
 ## Test User
 For testing purposes, you can use the following test credentials to log into the application:
