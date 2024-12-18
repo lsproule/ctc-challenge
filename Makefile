@@ -1,6 +1,6 @@
 BACKEND_DIR=backend
 
-.PHONY: all setup production-db docker-up cleanup
+.PHONY: all setup docker-up cleanup # production-db 
 
 all: setup
 #
@@ -14,7 +14,7 @@ all: setup
 docker-up:
 	docker compose up
 
-setup: production-db docker-up
+setup: docker-up #production-db docker-up
 
 cleanup:
 	cd $(BACKEND_DIR) && \
