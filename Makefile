@@ -3,13 +3,13 @@ BACKEND_DIR=backend
 .PHONY: all setup production-db docker-up cleanup
 
 all: setup
-
-production-db:
-	cd $(BACKEND_DIR) && \
-	RAILS_ENV=production rails db:create && \
-	RAILS_ENV=production rails db:migrate && \
-	RAILS_ENV=production rails db:seed && \
-	cd ..
+#
+#production-db:
+#	cd $(BACKEND_DIR) && \
+#	RAILS_ENV=production rails db:create && \
+#	RAILS_ENV=production rails db:migrate && \
+#	RAILS_ENV=production rails db:seed && \
+#	cd ..
 
 docker-up:
 	docker compose up
