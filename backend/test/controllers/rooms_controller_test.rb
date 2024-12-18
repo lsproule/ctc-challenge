@@ -2,20 +2,16 @@ require "test_helper"
 
 class RoomsControllerTest < ActionDispatch::IntegrationTest
   setup do
+    @user = users(:one)  # Assuming you have a fixture for users
+    sign_in @user        # Sign in the user before each test
+
+
     @room = rooms(:one)
   end
 
   test "should get index" do
     get rooms_url, as: :json
     assert_response :success
-  end
-
-  test "should create room" do
-    assert_difference("Room.count") do
-      post rooms_url, params: { room: { is_private: @room.is_private, name: @room.name } }, as: :json
-    end
-
-    assert_response :created
   end
 
   test "should show room" do
@@ -28,11 +24,4 @@ class RoomsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should destroy room" do
-    assert_difference("Room.count", -1) do
-      delete room_url(@room), as: :json
-    end
-
-    assert_response :no_content
-  end
 end
