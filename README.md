@@ -18,6 +18,7 @@ This will start both the frontend and backend services.
 For testing purposes, you can use the following test credentials to log into the application:
 
 Email: test@test.com
+
 Password: password
 
 ## Admin Panel
