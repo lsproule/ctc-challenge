@@ -3,8 +3,11 @@ Rails.application.routes.draw do
   
   devise_for :users, controllers: {
      sessions: 'users/sessions',
-     registrations: 'users/registrations' 
-  }
+     registrations: 'users/registrations',
+  } 
+  devise_scope :user do  
+   get '/users/sign_out' => 'users/sessions#destroy'
+  end
 
   authenticate :user do
     resources :rooms
@@ -12,10 +15,11 @@ Rails.application.routes.draw do
     
     mount ActionCable.server => '/cable'
     mount Motor::Admin => '/motor_admin'
-    
-    get '/check_auth', to: 'auth_check#check'
-  end
 
+    get '/check_auth', to: 'auth_check#check'
+    get '/current_user', to: 'users#get_current_user' 
+  end
+  
   get '/' => redirect('/app')
 
 

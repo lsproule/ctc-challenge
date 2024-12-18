@@ -7,3 +7,23 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+
+
+user = User.find_or_create_by(email: 'test@test.com') 
+user.password = 'password' 
+user.save!
+
+user1 = User.find_or_create_by(email: 'test2@test.com') 
+user1.password = 'password'  
+user1.save!
+
+room = Room.find_or_create_by(name: 'Default')  
+room.save!
+
+(1..10).each do |i| 
+  Message.create!(content: "Message #{i}", user: user,  room: room)  
+  Message.create!(content: "Message #{i}", user: user1, room: room)   
+end
+
+

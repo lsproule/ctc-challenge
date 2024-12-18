@@ -1,3 +1,111 @@
+
+
+<style type="text/css">
+/* General page styling */
+.page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+/* Form container */
+form {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  padding: 20px 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+/* Headings */
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Form fields */
+.field {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  font-weight: bold;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+/* Error messages */
+.devise-error-messages {
+  background-color: #ffdddd;
+  border-left: 4px solid #f44336;
+  color: #d8000c;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+/* Submit button */
+.actions input[type="submit"] {
+  width: 100%;
+  padding: 12px 20px;
+  border: none;
+  background: #007bff;
+  color: white;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.actions input[type="submit"]:hover {
+  background: #0056b3;
+}
+
+/* Links */
+.devise-links {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.devise-links a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.devise-links a:hover {
+  text-decoration: underline;
+}
+
+</style> 
+  
+<div class="page">
 <h2>Sign up</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -25,5 +133,5 @@
     <%= f.submit "Sign up" %>
   </div>
 <% end %>
-
 <%= render "devise/shared/links" %>
+</div>

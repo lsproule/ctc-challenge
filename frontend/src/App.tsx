@@ -1,5 +1,5 @@
 import "./App.css";
-import { Home } from "@/pages";
+import { Home, Profile } from "@/pages";
 import { BrowserRouter, Routes, Route } from "react-router";
 
 function App() {
@@ -7,6 +7,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/app" element={<Home />} />
+        <Route path="/app/profile" element={<Profile />} />
         <Route
           path="/app/sign_in"
           Component={() => {
